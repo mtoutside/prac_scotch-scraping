@@ -2,7 +2,7 @@
 const logger = require('morgan');
 const express = require('express');
 
-// express application
+// express application init
 const app = express();
 
 const port = process.env.PORT || 3000;
