@@ -21,7 +21,7 @@ const SCOTCH_BASE = "https://scotch.io";
 ///////////////////////////////////////////////////////////////////////////////
 
 const scotchRelativeUrl = url =>
-	_.isString(url) ? `${SCOTCH_BASE}${url.replace(/^\*?/, "/"}` : null;
+	_.isString(url) ? `${SCOTCH_BASE}${url.replace(/^\/*?/, "/")}` : null;
 
 const extractScotchUrlAttribute = attr =>
 	compose(enforceHttpsUrl, scotchRelativeUrl, fetchElemAttribute(attr));

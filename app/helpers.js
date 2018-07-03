@@ -16,7 +16,7 @@ const compose = (...fns) => arg => {
 
 
 const composeAsync = (...fns) => arg => {
-	return _.flattenDeep(fns).reduceRight((current, fn) => {
+	return _.flattenDeep(fns).reduceRight(async (current, fn) => {
 		if(_.isFunction(fn)) return fn(await current);
 		throw new TypeError("compose() expects only functions as parameters.");
 	}, arg);
@@ -34,10 +34,10 @@ const sanitizeNumber = number =>
 const withoutNulls = arr =>
 	_.isArray(arr) ? arr.filter(val => !_.isNull(val)) : [];
 
-const arrayPairsToObject arr = =>
+const arrayPairsToObject =  arr =>
 	arr.reduce((obj, pair) => ({ ...obj, ...pair }), {});
 
-const from PairsToObject = compose(arrayPairsToObject, withoutNulls);
+const fromPairsToObject = compose(arrayPairsToObject, withoutNulls);
 
 
 const sendResponse = res => async request => {
