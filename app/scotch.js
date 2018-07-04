@@ -60,7 +60,7 @@ const extractSocialUrl = elem => {
 		fetchElemAttribute('class')
 	)(icon);
 
-	return social && { [social]: hfer};
+	return social && { [social]: href};
 };
 /**
  * Extract a single post from container element
@@ -70,7 +70,7 @@ const extractPost = elem => {
 	const title = elem.find('.card__title a');
 	const image = elem.find('a[data-src]');
 	const views = elem.find("a[title='Views'] span");
-	const comments = elem.find("a[title='Comments']span.comment-number");
+	const comments = elem.find("a[title='Comments'] span.comment-number");
 
 	return {
 		title: fetchElemInnerText(title),
@@ -93,7 +93,7 @@ const extractStat = elem => {
 	const stat = extractNumber(statElem);
 	const label = compose(lowercase, fetchElemInnerText)(labelElem);
 
-	return { [label]:stat};
+	return { [label]: stat };
 };
 
 /**
@@ -109,24 +109,25 @@ const extractAuthorProfile = $ => {
 
 	const authorTitle = scotchHero.find(".profile__name h1.title");
 	const profileRole = authorTitle.find(".tag");
-	const profileAvatar = scotchHero.find(".img.profile__stat");
+  const profileAvatar = scotchHero.find("img.profile__avater");
+  const profileStats = scotchHero.find(".profile__stats .profile__stat");
 	const authorLinks = scotchHero.find(".author-links a[target='_blank']");
   const authorPosts = superGrid.find(".super-grid__item [data-type='post']");
 
 	const extractPosts = extractFromElems(extractPost)();
 	const extractStats = extractFromElems(extractStat)(fromPairsToObject);
-	const extarctSocialUrls = extractFromElems(extarctSocialUrl)(fromPairsToObject);
+	const extractSocialUrls = extractFromElems(extractSocialUrl)(fromPairsToObject);
 
 	return Promise.all([
 		fetchElemInnerText(authorTitle.contents().first()),
 		fetchElemInnerText(profileRole),
 		extractUrlAttribute('content')(metaScotch),
 		extractUrlAttribute('src')(profileAvatar),
-		extarctSocialUrls(authorLinks)($),
+		extractSocialUrls(authorLinks)($),
 		extractStats(profileStats)($),
 		extractPosts(authorPosts)($)
 	]).then(([ author, role, url, avatar, social, stats, posts ]) =>
-		({ author, role, url, avatar, social, stats, posts}));
+		({ author, role, url, avatar, social, stats, posts }));
 
 };
 
@@ -139,4 +140,4 @@ const fetchAuthorProfile = author => {
 	return composeAsync(extractAuthorProfile, fetchHtmlFromUrl)(AUTHOR_URL);
 };
 
-module.exports = {fetchAuthorProfile};
+module.exports = { fetchAuthorProfile };

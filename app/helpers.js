@@ -27,7 +27,7 @@ const enforceHttpsUrl = url =>
 
 const sanitizeNumber = number =>
 	_.isString(number)
-    ? number.replace(/[^0~9-.]/g, "")
+    ? number.replace(/[^0-9-.]/g, "")
     : _.isNumber(number) ? number : null;
 
 
